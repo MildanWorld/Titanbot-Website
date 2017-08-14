@@ -7,22 +7,23 @@
     <title>@ViewData["Title"] - Titanbot</title>
 
     <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" 
+        <link rel="shortcut icon" type="image/x-icon" href="~/images/favicon.ico" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
-              crossorigin="anonymous" />
-
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+              integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">
                 <img src="~/images/logo.png" width="50" height="50" alt="" 
@@ -50,11 +51,11 @@
     </nav>
 
     <div class="container body-content">
+        <div class="alert alert-info" role="alert">
+            The Titanbot website is still under early development. If you find a bug, spelling mistake, or simply have a suggestion, come by 
+            our discord guild at <a href="http://discord.gg/abQPtHu" target="_blank" class="alert-link">Yort Kingdom</a> and have a chat!
+        </div>
         @RenderBody()
-        @*<hr />
-        <footer>
-            <p>&copy; 2017 - Titanbot</p>
-        </footer>*@
     </div>
 
     <environment names="Development">
