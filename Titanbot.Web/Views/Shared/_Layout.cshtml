@@ -1,4 +1,4 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@*@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet*@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +20,7 @@
               crossorigin="anonymous"/>
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
     </environment>
-    @Html.Raw(JavaScriptSnippet.FullScript)
+    @*@Html.Raw(JavaScriptSnippet.FullScript)*@
 </head>
 <body>
     <nav class="navbar navbar-expand-sm fixed-top navbar-dark bg-dark">
