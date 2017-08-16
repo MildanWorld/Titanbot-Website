@@ -2,62 +2,91 @@
     ViewData["Title"] = "Examples";
 }
 
-
-@{
-    var fillerText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquet luctus eros ut laoreet. Pellentesque vitae eros vehicula nunc faucibus luctus ut et nulla. Nulla sodales lacinia quam eu tincidunt. Quisque quam metus, pretium in nisl eu, vehicula aliquam libero. Nulla facilisis ligula venenatis tempor gravida. Donec ornare nulla lectus, sagittis lacinia nunc accumsan vitae. In euismod vel massa vitae viverra. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse ac accumsan metus. Etiam ullamcorper purus mi, et pellentesque mi aliquam a. Cras id risus sit amet urna viverra fringilla. Cras sit amet sapien laoreet, venenatis lacus et, sodales nulla. Aliquam in orci massa. Nunc efficitur varius elit, nec condimentum dui aliquet in. Etiam sit amet justo at elit eleifend ornare.";
-}
-
 <div>
     <h1>Examples!</h1>
     <div class="row">
         <div class="col-2">
-            <nav id="navbar-example3" class="navbar navbar-light bg-light">
+            <nav id="navbar-list" class="navbar navbar-light bg-light">
                 <a class="navbar-brand" href="#">Overview</a>
                 <nav class="nav nav-pills flex-column">
-                    <a class="nav-link" href="#item-1">Item 1</a>
+                    <a class="nav-link" href="#introduction">Introduction</a>
                     <nav class="nav nav-pills flex-column">
-                        <a class="nav-link ml-3 my-1" href="#item-1-1">Item 1-1</a>
-                        <a class="nav-link ml-3 my-1" href="#item-1-2">Item 1-2</a>
+                        <a class="nav-link ml-3 my-1" href="#adding-the-bot">Adding the bot</a>
+                        <a class="nav-link ml-3 my-1" href="#configuring-the-bot">Configuring the bot</a>
+                        <a class="nav-link ml-3 my-1" href="#message-handling">Message handling</a>
                     </nav>
-                    <a class="nav-link" href="#item-2">Item2</a>
-                    <a class="nav-link" href="#item-3">Item3</a>
-                    <nav class="nav nav-pills flex-column">
-                        <a class="nav-link ml-3 my-1" href="#item-3-1">Item 3-1</a>
-                        <a class="nav-link ml-3 my-1" href="#item-3-2">Item 3-2</a>
-                    </nav>
+                    <a class="nav-link" href="#commands">Commands</a>
                 </nav>
             </nav>
         </div>
         
         <div class="col-10">
-            <div data-spy="scroll" data-target="#navbar-example3" style="position: relative; height: 700px; overflow-y: scroll;">
-                <h4 id="item-1">Item 1</h4>
+            <div data-spy="scroll" data-target="#navbar-list" style="position: relative; height: 700px; overflow-y: scroll;">
+                <h4 id="introduction">Introduction</h4>
                 <p>
-                    @fillerText
+                    This page will help you in inviting the bot to your guild, configuring it so it fits your needs and a little bit of info
+                    about how Titanbot handles a message you send to it. Finally there will be a list of all the commands that Titanbot supports.
+                    Do keep in mind that you may not have access to all of the commands since some of them require administrator rights.
                 </p>
-                <h5 id="item-1-1">Item 1-1</h5>
+                <h5 id="adding-the-bot">Adding the bot</h5>
                 <p>
-                    @fillerText
+                    To add Titanbot to your guild, you will have to be an administrator of said guild.
+                    All you have to do is click the 'invite' button at the top of the page, log in if necessary and choose the guild you want to add it on.
+                    That is really all there is to adding the bot to your guild! Nice and simple, right?
                 </p>
-                <h5 id="item-1-2">Item 1-2</h5>
+                <h5 id="configuring-the-bot">Configuring the bot</h5>
                 <p>
-                    @fillerText
+                    Titanbot comes with a bunch of commands at your disposal, the most popular of which is the <code>TitanLord</code> command.
+                    For example the titanlord command is by default only accessible to administrators of the guild, since by default 
+                    it will ping <code>@@everyone.</code> <br/>
+
+                    To help you manage permissions for command, Titanbot has the <code>EditCommand</code> command at your disposal for exactly this purpose! <br/>
+                    
+                    <code>EditCommand</code> has a few usages, but the usual ones are the <code>SetRole</code> or <code>SetPerm</code> sub-commands.
+                    They are used to either whitelist roles or permissions to allow the usage of a command by anyone who has the role or required permissions.
+                    If you for example have a role called <code>Members</code> and would like them to have access to the <code>TitanLord</code> command,
+                    you would write <br/>
+                    <code>t$EditCommand SetRole TitanLord Members</code> <br/>
+                    This will open up the <code>TitanLord</code> command, along with all
+                    of its usages. You can also decide you want anyone with a certain permission to be able to use the command, like anyone who can kick someone
+                    from your server. This would, hopefully, only be people you trust so they could help with the timer, instead of you having to define several
+                    roles that are allowed to use the command. To find out what your permission number is, check out 
+                    <a href="https://discordapi.com/permissions.html" target="_blank">Discord's Permission Calculator</a>. So back to the example of allowing
+                    anyone with kicking capabilities on your server to use the <code>TitanLord</code> command, you would write: <br/>
+                    <code>t$EditCommand SetPerm TitanLord 2</code> because <code>2</code> is the permission number for kicking members. <br/>
+                    Only remaining important thing is that you can also control who has access to the sub-commands. For example maybe you want
+                    <code>TitanLord When</code> to be available to everyone, so you would simply write the command and sub-command with a
+                    punctuation mark inbetween. <br/>
+                    <code>t$EditCommand SetPerm TitanLord.When 0</code>, beacuse 0 is available to everyone. <br/>
+                    To read more about the <code>EditCommand</code>, check it out in the commands list. <br/>
                 </p>
-                <h4 id="item-2">Item 2</h4>
+                <h5 id="message-handling">Message handling</h5>
                 <p>
-                    @fillerText
+                    Titanbot has a few ways of interpreting any message you send to it. This section outlines some of the more important parts of this.
+                    <ul>
+                        <li>
+                            Every message is translated to lower case, so <code>TITANLORD</code> is the same as <code>TitanLord</code> because
+                            it will all be interpreted as <code>titanlord</code>
+                        </li>
+                        <li>
+                            Some commands allow for multiple values. These will be defined as <code>&lt;params...&gt;</code> in the command description
+                            and are separated by commas. <code>t$EditCommand SetRole TitanLord Member, Moderator</code> will for example open the 
+                            <code>TitanLord</code> command to anyone has the Member role or Moderator role.
+                        </li>
+                        <li>
+                            If one of your roles consist of spaces, all you have to do is wrap it into quotes. This can also be combined with
+                            the multiple values like <code>t$EditCommand SetRole TitanLord "Role With Space", "Another Role"</code>.
+                        </li>
+                    </ul>
                 </p>
-                <h4 id="item-3">Item 3</h4>
+                <h4 id="commands">Commands</h4>
                 <p>
-                    @fillerText
-                </p>
-                <h5 id="item-3-1">Item 3-1</h5>
-                <p>
-                    @fillerText
-                </p>
-                <h5 id="item-3-2">Item 3-2</h5>
-                <p>
-                    @fillerText
+                    Command List here...
+                    
+                    <br/>
+                    <code>&lt;param&gt;</code> is required. <br/>
+                    <code>[param]</code> is optional. <br/>
+                    <code>&lt;params...&gt;</code> can be multi-valued. <br/>
                 </p>
             </div>
         </div>
