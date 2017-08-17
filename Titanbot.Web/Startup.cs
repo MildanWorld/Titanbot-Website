@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Titanbot.Web._HardcodedValues;
 
 namespace Titanbot.Web
 {
@@ -29,6 +30,9 @@ namespace Titanbot.Web
         {
             // Add framework services.
             services.AddMvc();
+
+            // Add dependency injection
+            services.AddSingleton(new HardcodedCommands());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

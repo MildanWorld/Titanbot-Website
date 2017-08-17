@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Titanbot.Web.ViewModels.AllCommands
+
+@{
     ViewData["Title"] = "Examples";
 }
 
@@ -16,6 +18,12 @@
                         <a class="nav-link ml-3 my-1" href="#message-handling">Message handling</a>
                     </nav>
                     <a class="nav-link" href="#commands">Commands</a>
+                    <nav class="nav nav-pills flex-column">
+                        @foreach (var command in Model.Commands)
+                        {
+                            <a class="nav-link ml-3 my-1" href="#@(command.Name)">@command.Name</a>
+                        }
+                    </nav>
                 </nav>
             </nav>
         </div>
@@ -88,6 +96,34 @@
                     <code>[param]</code> is optional. <br/>
                     <code>&lt;params...&gt;</code> can be multi-valued. <br/>
                 </p>
+                @foreach (var command in Model.Commands)
+                {
+                    <h5 id="@(command.Name)">@command.Name</h5>
+                    <p>
+                        @command.Description
+                    </p>
+                    <p>
+                        @foreach (var a in command.Aliases)
+                        {
+                            <span>@a</span> <br/>
+                        }
+                    </p>
+                    <p>
+                        Group: @command.Group.ToString()
+                    </p>
+                    <p>
+                        DefaultPerm: @command.DefaultPerm.ToString()
+                    </p>
+                    <p>
+                        @foreach (var u in command.Usages)
+                        {
+                            <span>@u</span>
+                        }
+                    </p>
+                    <p>
+                        @command.Notes
+                    </p>
+                }
             </div>
         </div>
         
