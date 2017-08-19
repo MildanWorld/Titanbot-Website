@@ -7,8 +7,8 @@
 <div>
     <h1>Examples!</h1>
     <div class="row">
-        <div class="col-2">
-            <nav id="navbar-list" class="navbar navbar-light bg-light">
+        <div class="col-3">
+            <nav id="navbar-list" class="navbar navbar-light bg-light scrollBox">
                 <a class="navbar-brand" href="#">Overview</a>
                 <nav class="nav nav-pills flex-column">
                     <a class="nav-link" href="#introduction">Introduction</a>
@@ -19,17 +19,23 @@
                     </nav>
                     <a class="nav-link" href="#commands">Commands</a>
                     <nav class="nav nav-pills flex-column">
-                        @foreach (var command in Model.Commands)
+                        @foreach (var group in Model.PriorityGroups)
                         {
-                            <a class="nav-link ml-3 my-1" href="#@(command.Name)">@command.Name</a>
+                            <a class="nav-link ml-3 my-1" href="#@group.ToString()">@group.ToString() commands</a>
+                            <nav class="nav nav-pills flex-column">
+                            @foreach (var command in Model.Commands.Where(v => v.Group == group).OrderBy(v => v.Name))
+                            {
+                                <a class="nav-link ml-5 my-1" href="#@command.Name">@command.Name</a>
+                            }
+                            </nav>
                         }
                     </nav>
                 </nav>
             </nav>
         </div>
         
-        <div class="col-10">
-            <div data-spy="scroll" data-target="#navbar-list" style="position: relative; height: 700px; overflow-y: scroll;">
+        <div class="col-9">
+            <div data-spy="scroll" data-target="#navbar-list" class="scrollBox">
                 <h4 id="introduction">Introduction</h4>
                 <p>
                     This page will help you in inviting the bot to your guild, configuring it so it fits your needs and a little bit of info
@@ -57,10 +63,10 @@
                     <code>t$EditCommand SetRole TitanLord Members</code> <br/>
                     This will open up the <code>TitanLord</code> command, along with all
                     of its usages. You can also decide you want anyone with a certain permission to be able to use the command, like anyone who can kick someone
-                    from your server. This would, hopefully, only be people you trust so they could help with the timer, instead of you having to define several
+                    from your guild. This would, hopefully, only be people you trust so they could help with the timer, instead of you having to define several
                     roles that are allowed to use the command. To find out what your permission number is, check out 
                     <a href="https://discordapi.com/permissions.html" target="_blank">Discord's Permission Calculator</a>. So back to the example of allowing
-                    anyone with kicking capabilities on your server to use the <code>TitanLord</code> command, you would write: <br/>
+                    anyone with kicking capabilities on your guild to use the <code>TitanLord</code> command, you would write: <br/>
                     <code>t$EditCommand SetPerm TitanLord 2</code> because <code>2</code> is the permission number for kicking members. <br/>
                     Only remaining important thing is that you can also control who has access to the sub-commands. For example maybe you want
                     <code>TitanLord When</code> to be available to everyone, so you would simply write the command and sub-command with a
@@ -74,7 +80,7 @@
                     <ul>
                         <li>
                             Every message is translated to lower case, so <code>TITANLORD</code> is the same as <code>TitanLord</code> because
-                            it will all be interpreted as <code>titanlord</code>
+                            it will all be interpreted as <code>titanlord</code>.
                         </li>
                         <li>
                             Some commands allow for multiple values. These will be defined as <code>&lt;params...&gt;</code> in the command description
@@ -89,40 +95,75 @@
                 </p>
                 <h4 id="commands">Commands</h4>
                 <p>
-                    Command List here...
-                    
+                    Here you can find all of the commands in Titanbot!
+                    Hopefully this will help you in using all of the commands available to you.
+                    Do keep in mind that if you're a regular user in a guild, not every command will be available to you,
+                    and that even if a command has a default permission that you meet, an administrator can restrict any command
+                    they wish on their guild.
+                    <br/>
+
+                    Below is a quick cheat sheet in how the parameters of the bot are presented in the usage section of any command.
                     <br/>
                     <code>&lt;param&gt;</code> is required. <br/>
                     <code>[param]</code> is optional. <br/>
                     <code>&lt;params...&gt;</code> can be multi-valued. <br/>
                 </p>
-                @foreach (var command in Model.Commands)
+                @foreach (var group in Model.PriorityGroups)
                 {
-                    <h5 id="@(command.Name)">@command.Name</h5>
-                    <p>
-                        @command.Description
-                    </p>
-                    <p>
-                        @foreach (var a in command.Aliases)
+                    <h5 id="@group.ToString()">@group.ToString() commands</h5>
+                    foreach (var command in Model.Commands.Where(v => v.Group == group).OrderBy(v => v.Name))
+                    {
+                        <h6 id="@command.Name">@command.Name</h6>
+                        <p>
+                            @command.Description
+                        </p>
+                        if (command.Aliases.Any())
                         {
-                            <span>@a</span> <br/>
+                            <p>
+                                Aliases for this command:
+                                
+                                @* Fuck this aint pretty... Could use '@string.Join(", ", command.Aliases)' but that
+                                   won't have the actual alias in a code block... Could try injecting a <code>*</code> tag somehow?
+                                *@
+                                @for (var i = 0; i < command.Aliases.Count; ++i)
+                                {
+                                    <code>@command.Aliases[i]</code>
+                                    if (i < command.Aliases.Count - 1)
+                                    {
+                                        @(",")
+                                    }
+                                }
+                            </p>
                         }
-                    </p>
-                    <p>
-                        Group: @command.Group.ToString()
-                    </p>
-                    <p>
-                        DefaultPerm: @command.DefaultPerm.ToString()
-                    </p>
-                    <p>
-                        @foreach (var u in command.Usages)
+                        <p>
+                            
+                        </p>
+                        <p>
+                            Default permission: @command.DefaultPerm.ToString()
+                        </p>
+                        <p>
+                            @foreach (var u in command.Usages)
+                            {
+                                if (u.Contains("-"))
+                                {
+                                    var usage = u.Split('-');
+                                    <code>@usage[0]</code> @usage[1]
+                                }
+                                else
+                                {
+                                    <span>@u</span>
+                                }
+                                <br/>
+                            }
+                        </p>
+                        if (string.IsNullOrEmpty(command.Notes) == false)
                         {
-                            <span>@u</span>
+                             <p>
+                                 @command.Notes
+                             </p>
                         }
-                    </p>
-                    <p>
-                        @command.Notes
-                    </p>
+                        
+                    }
                 }
             </div>
         </div>

@@ -35,3 +35,11 @@ textarea {
         display: none;
     }
 }
+
+/* Custom styling */
+.scrollBox {
+    position: relative;
+    height: 700px;
+    overflow-y: scroll;
+    overflow-x: visible;
+}
