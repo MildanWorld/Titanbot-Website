@@ -14,6 +14,7 @@ namespace Titanbot.Web.Models
         public CommandGroup Group { get; set; }
         public DefaultPerms DefaultPerm { get; set; }
         public List<string> Usages { get; set; } = new List<string>();
+        public List<string> Flags { get; set; } = new List<string>();
         public string Notes { get; set; }
     }
 }

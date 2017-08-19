@@ -144,9 +144,9 @@
                         <p>
                             @foreach (var u in command.Usages)
                             {
-                                if (u.Contains("-"))
+                                if (u.Contains(" - "))
                                 {
-                                    var usage = u.Split('-');
+                                    var usage = u.Split(new [] {" - "}, StringSplitOptions.RemoveEmptyEntries);
                                     <code>@usage[0]</code> @usage[1]
                                 }
                                 else
