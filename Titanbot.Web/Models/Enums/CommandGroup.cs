@@ -9,7 +9,7 @@ namespace Titanbot.Web.Models.Enums
     {
         General,
         Admin,
-        // Owner,
+        Owner,
         Data,
         Clan,
         Bot

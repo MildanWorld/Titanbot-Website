@@ -101,6 +101,11 @@
                     and that even if a command has a default permission that you meet, an administrator can restrict any command
                     they wish on their guild.
                     <br/>
+                    
+                    Do keep in mind that any sub-commands may not have the default permissions mentioned for the overall command.
+                    There is however not an easy for to show this currently, but if you'd like to see it, let us know in our discord
+                    guild :)
+                    <br/>
 
                     Below is a quick cheat sheet in how the parameters of the bot are presented in the usage section of any command.
                     <br/>
@@ -142,17 +147,31 @@
                             Default permission: @command.DefaultPerm.ToString()
                         </p>
                         <p>
+                            Usages for this command: <br/>
                             @foreach (var u in command.Usages)
                             {
                                 if (u.Contains(" - "))
                                 {
-                                    var usage = u.Split(new [] {" - "}, StringSplitOptions.RemoveEmptyEntries);
-                                    <code>@usage[0]</code> @usage[1]
+                                    var usage = u.Split(new[] {" - "}, StringSplitOptions.RemoveEmptyEntries);
+                                    <code>@usage[0]</code>
+                                    @usage[1]
                                 }
                                 else
                                 {
                                     <span>@u</span>
                                 }
+                                <br/>
+                            }
+                        </p>
+                        <p>
+                            Flags: <br/>
+                            @foreach (var f in command.Flags)
+                            {
+                                <span>
+                                    <code>
+                                        @f.ShortInvokationString() (@f.InvokationString()) @f.GetArguments()
+                                    </code> - @f.Description
+                                </span>
                                 <br/>
                             }
                         </p>

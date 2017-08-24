@@ -113,7 +113,6 @@ namespace Titanbot.Web._HardcodedValues
                         "t$formatting Use <format> - Sets what formatting style to use for your commands"
                     }
                 },
-                // TODO: Some usages are locked behind owner permissions
                 new Command
                 {
                     Name = "Languages",
@@ -250,9 +249,38 @@ namespace Titanbot.Web._HardcodedValues
                     {
                         "t$clanstats <clanLevel> -sta - Shows data about a clan with the given level"
                     },
-                    Flags = new List<string>
+                    Flags = new List<CommandFlag>
                     {
-                        // TODO
+                        new CommandFlag
+                        {
+                            ShortInvokation = 's',
+                            Invokation = "stage",
+                            Description = "Average max stage to use",
+                            Arguments = new List<string>
+                            {
+                                "averageMs"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 't',
+                            Invokation = "taps",
+                            Description = "Average taps to use",
+                            Arguments = new List<string>
+                            {
+                                "tapsPerCQ"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'a',
+                            Invokation = "attackers",
+                            Description = " Number of attackers to use (array)",
+                            Arguments = new List<string>
+                            {
+                                "attackers..."
+                            }
+                        }
                     }
                 },
                 new Command
@@ -284,17 +312,22 @@ namespace Titanbot.Web._HardcodedValues
                     Usages = new List<string>
                     {
                         "t$hero List -g - Lists all heros available",
-                        "t$hero <helper> [level] - Shows stats for a given hero on the given level"
+                        "t$hero <helper> [from] [to] - Shows stats for a given hero on the given level"
                     },
-                    Flags = new List<string>
+                    Flags = new List<CommandFlag>
                     {
-                        // TODO
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'g',
+                            Invokation = "group",
+                            Description = "Orders the heroes rather than grouping them"
+                        }
                     }
                 },
                 new Command
                 {
                     Name = "HighScore",
-                    Description = "Shows data from the high score sheet, which can be found here. All credit to @◢T2◢ LiLau, <@169180650203512832> and @/T2/Marzx13 for running the sheet!",
+                    Description = "Shows data from the high score sheet, which can be found here. All credit to @◢T2◢ LiLau#5715, @Bloodstrife#3312 and @/T2/Marzx13#0979 for running the sheet!",
                     Aliases = new List<string>
                     {
                         "HS"
@@ -332,43 +365,113 @@ namespace Titanbot.Web._HardcodedValues
                     {
                         "t$prestige <stage> -bci - Shows various stats about prestiging on the given stage"
                     },
-                    Flags = new List<string>
+                    Flags = new List<CommandFlag>
                     {
-                        // TODO
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'b',
+                            Invokation = "bos",
+                            Description = "Uses the given BoS level",
+                            Arguments = new List<string>
+                            {
+                                "bosLevel"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'c',
+                            Invokation = "clan",
+                            Description = "Uses the given clan level",
+                            Arguments = new List<string>
+                            {
+                                "clanLevel"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'i',
+                            Invokation = "ip",
+                            Description = "Uses the given IP level",
+                            Arguments = new List<string>
+                            {
+                                "ipLevel"
+                            }
+                        }
                     }
                 },
 
                 // Clan
-
-                // TODO:
-                // Apply command has mixed default permissions and apparently acts differently
-                // based on the channel of invokation (defaults to -g in DM but to local in a guild)
-                //new Command
-                //{
-                //    Name = "Apply",
-                //    Description = "Allows a user to register their interest in joining the clan",
-                //    Aliases = new List<string>
-                //    {
-                //        "R", "Reg", "Register"
-                //    },
-                //    Group = CommandGroup.Clan,
-                //    DefaultPerm = DefaultPerms.Everyone,
-                //    Usages = new List<string>
-                //    {
-                //        "t$apply <maxStage> <message> -girat - Creates your application for this clan",
-                //        "t$apply View -g - Views your registration for this guild",
-                //        "t$apply View <user> -g - View the registration for the given user",
-                //        "t$apply Cancel - Cancels your registration for this guild",
-                //        "t$apply Remove <user> - Removes the registration for the given user",
-                //        "t$apply Ignore <user> [ignore] - Specifies if a users global registrations should be ignored. Defaults to yes",
-                //        "t$apply List [start] [end] -g - Lists all applications for this guild",
-                //        "t$apply Clear - Completely clears your guilds application list"
-                //    },
-                //    Flags = new List<string>
-                //    {
-                //        "girat"
-                //    }
-                //},
+                new Command
+                {
+                    Name = "Apply",
+                    Description = "Allows a user to register their interest in joining the clan",
+                    Aliases = new List<string>
+                    {
+                        "R", "Reg", "Register"
+                    },
+                    Group = CommandGroup.Clan,
+                    DefaultPerm = DefaultPerms.Everyone,
+                    Usages = new List<string>
+                    {
+                        "t$apply <maxStage> <message> -girat - Creates your application for this clan",
+                        "t$apply View -g - Views your registration for this guild",
+                        "t$apply View <user> -g - View the registration for the given user",
+                        "t$apply Cancel - Cancels your registration for this guild",
+                        "t$apply Remove <user> - Removes the registration for the given user",
+                        "t$apply Ignore <user> [ignore] - Specifies if a users global registrations should be ignored. Defaults to yes",
+                        "t$apply List [start] [end] -g - Lists all applications for this guild",
+                        "t$apply Clear - Completely clears your guilds application list"
+                    },
+                    Flags = new List<CommandFlag>
+                    {
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'g',
+                            Invokation = "global",
+                            Description = "Specifies that the application is a global application."
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'i',
+                            Invokation = "images",
+                            Description = "Specifies a list of images to use with your application",
+                            Arguments = new List<string>
+                            {
+                                "images"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'r',
+                            Invokation = "relics",
+                            Description = "Specifies how many relics you have earned",
+                            Arguments = new List<string>
+                            {
+                                "relics"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'a',
+                            Invokation = "attacks",
+                            Description = "Specifies how many attacks you aim to do per week",
+                            Arguments = new List<string>
+                            {
+                                "attacks"
+                            }
+                        },
+                        new CommandFlag
+                        {
+                            ShortInvokation = 't',
+                            Invokation = "taps",
+                            Description = "Specifies how many taps you average per CQ",
+                            Arguments = new List<string>
+                            {
+                                "taps"
+                            }
+                        }
+                    }
+                },
                 new Command
                 {
                     Name = "Excuse",
@@ -381,9 +484,18 @@ namespace Titanbot.Web._HardcodedValues
                         "t$excuse Add <text> - Adds an excuse to the pool of available excuses",
                         "t$excuse Remove <id> - Removes an excuse you made by ID"
                     },
-                    Flags = new List<string>
+                    Flags = new List<CommandFlag>
                     {
-                        // TODO
+                        new CommandFlag
+                        {
+                            ShortInvokation = 'i',
+                            Invokation = "id",
+                            Description = "Specifies an ID to use",
+                            Arguments = new List<string>
+                            {
+                                "excuseId"
+                            }
+                        }
                     }
                 },
 
