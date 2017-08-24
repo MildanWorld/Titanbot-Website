@@ -1,4 +1,6 @@
-﻿@model Titanbot.Web.ViewModels.AllCommands
+﻿@using System
+@using System.Linq
+@model Titanbot.Web.ViewModels.AllCommands
 
 @{
     ViewData["Title"] = "Examples";
@@ -119,9 +121,8 @@
                     foreach (var command in Model.Commands.Where(v => v.Group == group).OrderBy(v => v.Name))
                     {
                         <h6 id="@command.Name">@command.Name</h6>
-                        <p>
-                            @command.Description
-                        </p>
+                        <p>@command.Description</p>
+
                         if (command.Aliases.Any())
                         {
                             <p>
@@ -140,48 +141,52 @@
                                 }
                             </p>
                         }
-                        <p>
-                            
-                        </p>
+
                         <p>
                             Default permission: @command.DefaultPerm.ToString()
                         </p>
-                        <p>
-                            Usages for this command: <br/>
-                            @foreach (var u in command.Usages)
-                            {
-                                if (u.Contains(" - "))
-                                {
-                                    var usage = u.Split(new[] {" - "}, StringSplitOptions.RemoveEmptyEntries);
-                                    <code>@usage[0]</code>
-                                    @usage[1]
-                                }
-                                else
-                                {
-                                    <span>@u</span>
-                                }
-                                <br/>
-                            }
-                        </p>
-                        <p>
-                            Flags: <br/>
-                            @foreach (var f in command.Flags)
-                            {
-                                <span>
-                                    <code>
-                                        @f.ShortInvokationString() (@f.InvokationString()) @f.GetArguments()
-                                    </code> - @f.Description
-                                </span>
-                                <br/>
-                            }
-                        </p>
-                        if (string.IsNullOrEmpty(command.Notes) == false)
+
+                        if (command.Usages.Any())
                         {
-                             <p>
-                                 @command.Notes
-                             </p>
+                            <p>
+                                Usages for this command: <br/>
+                                @foreach (var u in command.Usages)
+                                {
+                                    if (u.Contains(" - "))
+                                    {
+                                        var usage = u.Split(new[] {" - "}, StringSplitOptions.RemoveEmptyEntries);
+                                        <code>@usage[0]</code>
+                                        @usage[1]
+                                    }
+                                    else
+                                    {
+                                        <span>@u</span>
+                                    }
+                                    <br/>
+                                }
+                            </p>
+                        }
+
+                        if (command.Flags.Any())
+                        {
+                            <p>
+                                Flags: <br/>
+                                @foreach (var f in command.Flags)
+                                {
+                                    <span>
+                                        <code>
+                                            @f.ShortInvokationString() (@f.InvokationString()) @f.GetArguments()
+                                        </code> - @f.Description
+                                    </span>
+                                    <br/>
+                                }
+                            </p>
                         }
                         
+                        if (string.IsNullOrEmpty(command.Notes) == false)
+                        {
+                            <p>@command.Notes</p>
+                        }
                     }
                 }
             </div>

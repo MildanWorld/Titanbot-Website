@@ -132,17 +132,17 @@ namespace Titanbot.Web._HardcodedValues
                         "t$languages - Lists all the available languages for you to use."
                     }
                 },
-                new Command
-                {
-                    Name = "RemindMe",
-                    Description = "No description!",
-                    Group = CommandGroup.General,
-                    DefaultPerm = DefaultPerms.Everyone,
-                    Usages = new List<string>
-                    {
-                        "t$remindme <duration> <message> -"
-                    }
-                },
+                //new Command
+                //{
+                //    Name = "RemindMe",
+                //    Description = "No description!",
+                //    Group = CommandGroup.General,
+                //    DefaultPerm = DefaultPerms.Everyone,
+                //    Usages = new List<string>
+                //    {
+                //        "t$remindme <duration> <message> -"
+                //    }
+                //},
                 new Command
                 {
                     Name = "Preferences",
