@@ -6,14 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Titanbot.Web.Controllers
 {
-    public class HomeController : Controller
+    public class SettingController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
-        }
-        
-        public IActionResult Error()
         {
             return View();
         }

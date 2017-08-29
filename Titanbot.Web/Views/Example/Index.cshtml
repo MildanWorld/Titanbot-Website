@@ -9,14 +9,15 @@
 <div>
     <h1>Examples!</h1>
     <div class="row">
-        <div class="col-3">
-            <nav id="navbar-list" class="navbar navbar-light bg-light scrollBox">
+        <div class="col-12 col-md-4 col-lg-3">
+            <nav id="navbar-list" class="navbar navbar-light bg-light scrollBox overviewBox">
                 <a class="navbar-brand" href="#">Overview</a>
                 <nav class="nav nav-pills flex-column">
                     <a class="nav-link" href="#introduction">Introduction</a>
                     <nav class="nav nav-pills flex-column">
                         <a class="nav-link ml-3 my-1" href="#adding-the-bot">Adding the bot</a>
                         <a class="nav-link ml-3 my-1" href="#configuring-the-bot">Configuring the bot</a>
+                        <a class="nav-link ml-3 my-1" href="#settings">Settings</a>
                         <a class="nav-link ml-3 my-1" href="#message-handling">Message handling</a>
                     </nav>
                     <a class="nav-link" href="#commands">Commands</a>
@@ -25,10 +26,10 @@
                         {
                             <a class="nav-link ml-3 my-1" href="#@group.ToString()">@group.ToString() commands</a>
                             <nav class="nav nav-pills flex-column">
-                            @foreach (var command in Model.Commands.Where(v => v.Group == group).OrderBy(v => v.Name))
-                            {
-                                <a class="nav-link ml-5 my-1" href="#@command.Name">@command.Name</a>
-                            }
+                                @foreach (var command in Model.Commands.Where(v => v.Group == group).OrderBy(v => v.Name))
+                                {
+                                    <a class="nav-link ml-5 my-1" href="#@command.Name">@command.Name</a>
+                                }
                             </nav>
                         }
                     </nav>
@@ -36,8 +37,8 @@
             </nav>
         </div>
         
-        <div class="col-9">
-            <div data-spy="scroll" data-target="#navbar-list" class="scrollBox">
+        <div class="col-12 col-md-8 col-lg-9">
+            <div data-spy="scroll" data-target="#navbar-list" class="scrollBox px-4">
                 <h4 id="introduction">Introduction</h4>
                 <p>
                     This page will help you in inviting the bot to your guild, configuring it so it fits your needs and a little bit of info
@@ -76,6 +77,19 @@
                     <code>t$EditCommand SetPerm TitanLord.When 0</code>, beacuse 0 is available to everyone. <br/>
                     To read more about the <code>EditCommand</code>, check it out in the commands list. <br/>
                 </p>
+                <h5 id="settings">Settings</h5>
+                <p>
+                    There are some settings you can tinker with in Titanbot as a guild administrator and they can be found with the <code>Settings</code> command.
+                    To give a brief overview of how this works, you can type <code>t$Settings</code> to see the setting groups available within the bot.
+                    Then to get a view into the settings of <code>Titanlord</code> settings group, you would type <code>t$Settings Titanlord</code> and you will get
+                    a listing of the settings. To change one of them, all you have to do is take the Settings key and give it a new value. Much like how the previous
+                    section works. So to change the ClanQuest level to 800, type <code>t$Settings Set ClanQuest 800</code>. <br />
+                    To change the prepings setting, you can type <code>t$Settings Set PrePings 15m, 5m, 1m</code> to setup Titanbot to send out the <code>InXText</code>
+                    15, 5, and 1 minutes respectively before the Titanlord timer has finished. There are some tags like <code>%USER%</code> or <code>%TIME%</code>,
+                    that can be used in these texts that you can configure, but more info on this at the 
+                    <a asp-controller="Setting" asp-action="Index">the settings page</a>, where you can also get a better view of all the settings available to you,
+                    and potentially the ability to tweak them directly from this website at some point in the future.
+                </p>
                 <h5 id="message-handling">Message handling</h5>
                 <p>
                     Titanbot has a few ways of interpreting any message you send to it. This section outlines some of the more important parts of this.
@@ -94,6 +108,14 @@
                             the multiple values like <code>t$EditCommand SetRole TitanLord "Role With Space", "Another Role"</code>.
                         </li>
                     </ul>
+                    Finally, there are two ways to convey a time to Titanbot. It can either be with the <code>hh:mm:ss</code> format, meaning if your next Titanlord
+                    is up in 5 hours, 55 minutes, and 30 seconds, you can set it up like <code>t$TitanLord In 5:55:30</code>. If you type fewer colons, it will omit
+                    from behind. So <code>5:55</code> will be 5 hours and 55 minutes. <br />
+                    The second way is by giving it a number and a specifier as to if it is the hour, minute or second. The previous could also be 
+                    <code>t$TitanLord In 5h 55m 30s</code>. The specifiers for
+                    <code>hour</code> are <code>h, hr, hour, hours</code>, <code>minute</code> are <code>m, min, mins, minute, minutes</code> and finally
+                    for <code>second</code> they are <code>s, sec, secs, second, seconds</code>. These can be given in any order. <br />
+                    Finally if you give it a single number, it will be interpreted as the time in minutes.
                 </p>
                 <h4 id="commands">Commands</h4>
                 <p>
@@ -120,7 +142,7 @@
                     <h5 id="@group.ToString()">@group.ToString() commands</h5>
                     foreach (var command in Model.Commands.Where(v => v.Group == group).OrderBy(v => v.Name))
                     {
-                        <h6 id="@command.Name">@command.Name</h6>
+                        <h6 id="@command.Name"><b>@command.Name</b></h6>
                         <p>@command.Description</p>
 
                         if (command.Aliases.Any())

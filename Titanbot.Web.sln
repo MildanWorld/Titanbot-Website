@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Titanbot.Web", "Titanbot.Web\Titanbot.Web.csproj", "{93F93A20-AA03-4B1C-AAEC-5C7F8056E7D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Titanbot.Web", "Titanbot.Web\Titanbot.Web.csproj", "{93F93A20-AA03-4B1C-AAEC-5C7F8056E7D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D83D62C-E5CD-4A77-ACD9-C6EB3CF31A2E}
 	EndGlobalSection
 EndGlobal
