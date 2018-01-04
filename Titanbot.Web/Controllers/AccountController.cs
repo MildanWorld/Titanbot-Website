@@ -19,7 +19,7 @@ namespace Titanbot.Web.Controllers
         public IActionResult Login()
         {
             // Challenge here
-            var redirectUrl = Url.Action(nameof(LoginCallback), "Account", new { returnUrl });
+            //var redirectUrl = Url.Action(nameof(LoginCallback), "Account", new { returnUrl });
 
             
 
