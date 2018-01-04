@@ -46,11 +46,12 @@
                     <li>
                         <a class="nav-link" asp-controller="Setting" asp-action="Index">Settings</a>
                     </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
                     <li>
                         <a class="nav-link" asp-controller="About" asp-action="Index">About</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    @Html.Partial("_LoginPartial");
                 </ul>
             </div>
         </div>

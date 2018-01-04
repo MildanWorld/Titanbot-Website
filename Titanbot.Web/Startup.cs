@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Mvc;
 using Titanbot.Web._HardcodedValues;
 
 namespace Titanbot.Web
@@ -33,6 +37,38 @@ namespace Titanbot.Web
 
             // Add dependency injection
             services.AddSingleton(new HardcodedCommands());
+
+            // Require Https
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
+            services.AddIdentity<IdentityUser, IdentityRole>();
+            
+            // External login provider
+            services.AddAuthentication()
+                .AddCookie(o =>
+                {
+                    o.AccessDeniedPath = "/Account/Forbidden/";
+                    o.LoginPath = "/Account/Unauthorized/";
+                })
+                .AddDiscord(o => 
+                {
+                    o.AppId = Configuration["Discord:AppId"];
+                    o.AppSecret = Configuration["Discord:AppSecret"];
+                    o.Scope.Add("guilds");
+                    //discordOptions.AddScope("guilds", "email");
+                });
+
+            // Configure the login cookie
+            services.ConfigureApplicationCookie(o =>
+            {
+                //o.LoginPath = "Account/Login";
+                //o.AccessDeniedPath = "Account/Denied";
+                //o.LogoutPath = "Account/Logout";
+                o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +76,11 @@ namespace Titanbot.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            // Redirect all Http requests to Https
+            var options = new RewriteOptions()
+                .AddRedirectToHttps();
+            app.UseRewriter(options);
 
             if (env.IsDevelopment())
             {
@@ -50,15 +91,10 @@ namespace Titanbot.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            
             app.UseStaticFiles();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseAuthentication();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
