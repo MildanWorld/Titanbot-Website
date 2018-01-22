@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,12 @@ namespace Titanbot.Web
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
             Configuration = builder.Build();
         }
 
@@ -38,37 +45,28 @@ namespace Titanbot.Web
             // Add dependency injection
             services.AddSingleton(new HardcodedCommands());
 
-            // Require Https
+            // Requies all requests to be HTTPS, and ignores HTTP
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
             });
-
-            services.AddIdentity<IdentityUser, IdentityRole>();
             
             // External login provider
-            services.AddAuthentication()
-                .AddCookie(o =>
-                {
-                    o.AccessDeniedPath = "/Account/Forbidden/";
-                    o.LoginPath = "/Account/Unauthorized/";
-                })
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie()
                 .AddDiscord(o => 
                 {
-                    o.AppId = Configuration["Discord:AppId"];
-                    o.AppSecret = Configuration["Discord:AppSecret"];
+                    o.AppId = Configuration["Authentication:Discord:AppId"];
+                    o.AppSecret = Configuration["Authentication:Discord:AppSecret"];
+                    
                     o.Scope.Add("guilds");
-                    //discordOptions.AddScope("guilds", "email");
                 });
 
             // Configure the login cookie
-            services.ConfigureApplicationCookie(o =>
-            {
-                //o.LoginPath = "Account/Login";
-                //o.AccessDeniedPath = "Account/Denied";
-                //o.LogoutPath = "Account/Logout";
-                o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-            });
+            //services.ConfigureApplicationCookie(o =>
+            //{
+            //    o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,9 +76,8 @@ namespace Titanbot.Web
             loggerFactory.AddDebug();
 
             // Redirect all Http requests to Https
-            var options = new RewriteOptions()
-                .AddRedirectToHttps();
-            app.UseRewriter(options);
+            app.UseRewriter(new RewriteOptions()
+                .AddRedirectToHttpsPermanent());
 
             if (env.IsDevelopment())
             {

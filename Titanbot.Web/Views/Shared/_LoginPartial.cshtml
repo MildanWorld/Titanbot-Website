@@ -1,3 +1,12 @@
 ﻿<li>
-    <a asp-controller="Account" asp-action="Login">Login</a>
+    @*<a asp-controller="Account" asp-action="Login">Login</a>*@
+    <form asp-controller="Account" asp-action="Login" method="post">
+        <div>
+            <p>
+                <button type="submit" class="btn btn-link" title="Log in using your Discord account">
+                    Login with Discord
+                </button>
+            </p>
+        </div>
+    </form>
 </li>
