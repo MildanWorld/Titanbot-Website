@@ -1,12 +1,21 @@
-﻿<li>
-    @*<a asp-controller="Account" asp-action="Login">Login</a>*@
-    <form asp-controller="Account" asp-action="Login" method="post">
-        <div>
-            <p>
-                <button type="submit" class="btn btn-link" title="Log in using your Discord account">
-                    Login with Discord
-                </button>
-            </p>
-        </div>
-    </form>
+﻿@using Titanbot.Web.LoginManagers
+
+@inject CookieSignInManager SignInManager
+@inject CookieUserManager UserManager
+
+<li>
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <a asp-controller="Account" asp-action="Logout"
+       class="nav-link">
+        Hello @UserManager.GetUserName(User)
+    </a>
+    }
+    else
+    {
+        <a asp-controller="Account" asp-action="Login"
+           class="nav-link">
+            Login with Discord!
+        </a>
+    }
 </li>

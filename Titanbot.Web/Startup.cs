@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Mvc;
+using Titanbot.Web.LoginManagers;
 using Titanbot.Web._HardcodedValues;
 
 namespace Titanbot.Web
@@ -44,6 +45,8 @@ namespace Titanbot.Web
 
             // Add dependency injection
             services.AddSingleton(new HardcodedCommands());
+            services.AddTransient<CookieSignInManager>();
+            services.AddTransient<CookieUserManager>();
 
             // Requies all requests to be HTTPS, and ignores HTTP
             services.Configure<MvcOptions>(options =>
@@ -53,7 +56,7 @@ namespace Titanbot.Web
             
             // External login provider
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie()
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddDiscord(o => 
                 {
                     o.AppId = Configuration["Authentication:Discord:AppId"];

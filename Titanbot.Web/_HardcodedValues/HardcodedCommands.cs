@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Titanbot.Web.Models;
-using Titanbot.Web.Models.Enums;
+using Titanbot.Web.Models.CommandModels;
+using Titanbot.Web.Models.CommandModels.Enums;
 
 namespace Titanbot.Web._HardcodedValues
 {

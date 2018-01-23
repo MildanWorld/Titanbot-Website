@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Titanbot.Web.Models.Enums;
+﻿using System.Collections.Generic;
+using Titanbot.Web.Models.CommandModels.Enums;
 
-namespace Titanbot.Web.Models
+namespace Titanbot.Web.Models.CommandModels
 {
     public class Command
     {

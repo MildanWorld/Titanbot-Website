@@ -1,49 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Discord.OAuth2;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Titanbot.Web.LoginManagers;
 
 namespace Titanbot.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private const string LoginProviderKey = "LoginProvider";
-        private const string Provider = "Discord";
+        private readonly CookieSignInManager _signInManager;
+        
+        
 
-        private readonly IHttpContextAccessor _contextAccessor;
-
-        public AccountController(IHttpContextAccessor contextAccessor)
+        public AccountController(CookieSignInManager signInManager)
         {
-            _contextAccessor = contextAccessor;
+            _signInManager = signInManager;
         }
 
         [TempData]
         public string ErrorMessage { get; set; }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Login()
         {
             var redirectUrl = Url.Action(nameof(LoginCallback), "Account", new { returnUrl = "Home" });
-            var properties = new AuthenticationProperties
-            {
-                RedirectUri = redirectUrl
-            };
-            properties.Items[LoginProviderKey] = Provider;
-
-            return Challenge(properties, Provider);
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(redirectUrl);
+            return Challenge(properties, CookieSignInManager.Provider);
         }
 
         public async Task<IActionResult> LoginCallback(string returnUrl = null, string remoteError = null)
@@ -54,37 +33,20 @@ namespace Titanbot.Web.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
 
-            var info = await GetExternalLoginInfoAsync();
+            var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
-                return RedirectToAction(nameof(Login));
-            
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+
+            await _signInManager.SignInAsync(info.Principal);
 
 
-            return View();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        // Stolen from the SignInManager, but without all the Identity hassle
-        // https://github.com/aspnet/Identity/blob/dev/src/Identity/SignInManager.cs
-        private async Task<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        public async Task<IActionResult> Logout()
         {
-            var auth = await _contextAccessor.HttpContext.AuthenticateAsync(IdentityConstants.ExternalScheme);
-            var items = auth?.Properties?.Items;
-            if (auth?.Principal == null || items == null || !items.ContainsKey(LoginProviderKey))
-            {
-                return null;
-            }
-
-            var providerKey = auth.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
-            var provider = items[LoginProviderKey] as string;
-            if (providerKey == null || provider == null)
-            {
-                return null;
-            }
-
-            return new ExternalLoginInfo(auth.Principal, provider, providerKey, provider)
-            {
-                AuthenticationTokens = auth.Properties.GetTokens()
-            };
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }
