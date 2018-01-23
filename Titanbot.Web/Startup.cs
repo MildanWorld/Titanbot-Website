@@ -49,10 +49,10 @@ namespace Titanbot.Web
             services.AddTransient<CookieUserManager>();
 
             // Requies all requests to be HTTPS, and ignores HTTP
-            services.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
+            //services.Configure<MvcOptions>(options =>
+            //{
+            //    options.Filters.Add(new RequireHttpsAttribute());
+            //});
             
             // External login provider
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
