@@ -20,12 +20,12 @@ namespace Titanbot.Web.Controllers
         
         public IActionResult Login()
         {
-            var redirectUrl = Url.Action(nameof(LoginCallback), "Account", new { returnUrl = "Home" });
+            var redirectUrl = Url.Action(nameof(LoginCallback), "Account");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(redirectUrl);
             return Challenge(properties, CookieSignInManager.Provider);
         }
 
-        public async Task<IActionResult> LoginCallback(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> LoginCallback(string remoteError = null)
         {
             if (remoteError != null)
             {
