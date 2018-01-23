@@ -83,8 +83,8 @@ namespace Titanbot.Web
             loggerFactory.AddDebug();
 
             // Redirect all Http requests to Https
-            app.UseRewriter(new RewriteOptions()
-                .AddRedirectToHttpsPermanent());
+            //app.UseRewriter(new RewriteOptions()
+            //    .AddRedirectToHttpsPermanent());
 
             if (env.IsDevelopment())
             {
