@@ -53,11 +53,11 @@ namespace Titanbot.Web
             services.AddTransient<CookieUserManager>();
 
             // Requies all requests to be HTTPS, and ignores HTTP
-            //services.Configure<MvcOptions>(options =>
-            //{
-            //    options.Filters.Add(new RequireHttpsAttribute());
-            //});
-            
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             // External login provider
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -83,8 +83,8 @@ namespace Titanbot.Web
             loggerFactory.AddDebug();
 
             // Redirect all Http requests to Https
-            //app.UseRewriter(new RewriteOptions()
-            //    .AddRedirectToHttpsPermanent());
+            app.UseRewriter(new RewriteOptions()
+                .AddRedirectToHttps());
 
             if (env.IsDevelopment())
             {
