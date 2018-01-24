@@ -86,15 +86,15 @@ namespace Titanbot.Web
             app.UseRewriter(new RewriteOptions()
                 .Add(context =>
                 {
-                    context.Logger.LogInformation("-----Heroku logging test-----");
-                    context.Logger.LogInformation($"Http method: {context.HttpContext.Request.Method}");
-                    context.Logger.LogInformation($"Http path: {context.HttpContext.Request.Path}");
-                    context.Logger.LogInformation($"Http pathbase: {context.HttpContext.Request.PathBase}");
-                    context.Logger.LogInformation($"Http isHttps: {context.HttpContext.Request.IsHttps}");
-                    context.Logger.LogInformation($"Http headers count: {context.HttpContext.Request.Headers.Count}");
+                    Console.WriteLine("-----Heroku logging test-----");
+                    Console.WriteLine($"Http method: {context.HttpContext.Request.Method}");
+                    Console.WriteLine($"Http path: {context.HttpContext.Request.Path}");
+                    Console.WriteLine($"Http pathbase: {context.HttpContext.Request.PathBase}");
+                    Console.WriteLine($"Http isHttps: {context.HttpContext.Request.IsHttps}");
+                    Console.WriteLine($"Http headers count: {context.HttpContext.Request.Headers.Count}");
                     foreach (var header in context.HttpContext.Request.Headers)
                     {
-                        context.Logger.LogInformation($"--- {header.Key} : {header.Value}");
+                        Console.WriteLine($"--- {header.Key} : {header.Value}");
                     }
                 }));
 
