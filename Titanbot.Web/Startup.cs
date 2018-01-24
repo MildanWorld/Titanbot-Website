@@ -86,7 +86,7 @@ namespace Titanbot.Web
             app.UseRewriter(new RewriteOptions()
                 .Add(context =>
                 {
-                    Console.WriteLine("-----Heroku logging test-----");
+                    Console.WriteLine("----- HttpContext Request -----");
                     Console.WriteLine($"Http method: {context.HttpContext.Request.Method}");
                     Console.WriteLine($"Http path: {context.HttpContext.Request.Path}");
                     Console.WriteLine($"Http pathbase: {context.HttpContext.Request.PathBase}");
@@ -96,6 +96,17 @@ namespace Titanbot.Web
                     {
                         Console.WriteLine($"--- {header.Key} : {header.Value}");
                     }
+
+                    Console.WriteLine("----- HttpContext Response -----");
+                    Console.WriteLine($"Http hasStarted: {context.HttpContext.Response.HasStarted}");
+                    Console.WriteLine($"Http statuscode: {context.HttpContext.Response.StatusCode}");
+                    Console.WriteLine($"Http headers count: {context.HttpContext.Response.Headers.Count}");
+                    foreach (var header in context.HttpContext.Response.Headers)
+                    {
+                        Console.WriteLine($"--- {header.Key} : {header.Value}");
+                    }
+
+
                 }));
 
             if (env.IsDevelopment())
